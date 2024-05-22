@@ -4,7 +4,8 @@ export const TABLES:any={
     ACCOUNT:"accountTables",
     DIPOSIT:"depositTables",
     WITHDRAWAL:'withdrawalTables',
-    TRANSATION:"transactionTables"
+    TRANSATION:"transactionTables",
+    PRODUCT:"productTables"
 }
 export const userStatus={
     ACTIVE:1,

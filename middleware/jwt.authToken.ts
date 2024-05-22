@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import generateJwtToken from "../helper/jwtToken.helper";
+// import generateJwtToken from "../helper/jwtToken.helper";
 import database from "../models/index";
 
 import jwt from "jsonwebtoken";
