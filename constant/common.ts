@@ -5,7 +5,8 @@ export const TABLES:any={
     DIPOSIT:"depositTables",
     WITHDRAWAL:'withdrawalTables',
     TRANSATION:"transactionTables",
-    PRODUCT:"productTables"
+    PRODUCT:"productTables",
+    ADDCART:"addToCartTables"
 }
 export const userStatus={
     ACTIVE:1,

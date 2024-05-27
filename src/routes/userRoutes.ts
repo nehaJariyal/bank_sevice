@@ -1,7 +1,7 @@
 import * as express from "express";
 import UserController from "../controller/userController";
 import jwtMiddeleware from "../../middleware/jwt.authToken";
-import * as  transationControler from "../controller/transationControler";
+import * as  transactionControler from "../controller/transationControler";
 import userController from "../controller/userController";
 class UserRoutes {
   public router: any;
@@ -29,12 +29,25 @@ class UserRoutes {
       .post("/updateCard", jwtMiddeleware, userController.updateCardById)
       .get('/getCard',jwtMiddeleware,userController.getCardByIdOruserId)
 
-      //tansation
-      .post("/deposit",jwtMiddeleware,transationControler.createDeposit)
-      .post("/withdrawal",jwtMiddeleware,transationControler.createWithdrawal)
+      //tansaction
+      .post("/deposit",jwtMiddeleware,transactionControler.createDeposit)
+      .post("/withdrawal",jwtMiddeleware,transactionControler.createWithdrawal)
 
       // get all profile
       .post('/getprofile',jwtMiddeleware,userController.getAllProfile)
+
+
+      // add product data
+      .post('/product',jwtMiddeleware,transactionControler.addProduct)
+      .post('/updateProduct',jwtMiddeleware,transactionControler.updateProductbyId)
+      .post('/delProdct',jwtMiddeleware,transactionControler.deleteProductById)
+      .get('/getProduct',jwtMiddeleware,transactionControler.getproductByIdOruserId)
+
+//  add  to card 
+      .post('/addCart',jwtMiddeleware,transactionControler.addToCart)
+      // .post('/getAllProduct',jwtMiddeleware,transactionControler.getAllProduct)
+
+
   }
 }
 export default new UserRoutes();

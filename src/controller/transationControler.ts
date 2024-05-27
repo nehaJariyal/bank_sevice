@@ -6,7 +6,10 @@ import * as AccountHelper from "../../helper/account.helper";
 import { responceCode, withdrawalMassage } from "../../constant/common";
 import { depositMassage } from "../../constant/common";
 import { massage } from "../../constant/common";
+import * as productHelper from "../../helper/product.helper";
+import * as AddTocartHelper from "../../helper/addCart.helper";
 import sequelize from "../../db/sequelize";
+
 interface DepositTableAttributes {
   id: number;
   userId: number;
@@ -33,8 +36,24 @@ export interface TransactionTableAttributes {
   updatedAt?: Date;
 }
 
+interface ProductTableAttributes {
+  userId: number;
+  productName: string;
+  description: Text;
+  price: number;
+  image: string;
+  category: string;
+}
+
+interface AddTocardTableAttributes {
+  userId: number;
+  productId: number;
+  quantity: number;
+  status: string;
+}
+
 export const createDeposit = async (req: Request, res: Response) => {
-  const t = await sequelize.transaction(); 
+  const t = await sequelize.transaction();
 
   try {
     const amount = req.body.amount;
@@ -50,10 +69,10 @@ export const createDeposit = async (req: Request, res: Response) => {
     console.log("::::::::::::::::::::", userid, " :::::::::::::::::::::::::");
 
     if (!userId) {
-      t.rollback()
+      t.rollback();
       return res
         .status(400)
-        .json({ code: responceCode.ERROR,  massage:massage.ERROR_MASSAGE });
+        .json({ code: responceCode.ERROR, massage: massage.ERROR_MASSAGE });
     }
 
     console.log(
@@ -74,25 +93,23 @@ export const createDeposit = async (req: Request, res: Response) => {
       amount: amount,
       transactionType: "Deposit",
     });
-    t.commit()
-    return res.status(200).json({code:200 , deposit_data:createuser});
+    t.commit();
+    return res.status(200).json({ code: 200, deposit_data: createuser });
   } catch (error: any) {
     console.error("Error creating deposit:", error);
-    return res
-      .status(500)
-      .json({
-        code: responceCode.SERVER_ERROR,
-        error: depositMassage.SERVER_ERROR_MASSAGE,
-      });
+    return res.status(500).json({
+      code: responceCode.SERVER_ERROR,
+      error: depositMassage.SERVER_ERROR_MASSAGE,
+    });
   }
 };
 
 export const createWithdrawal = async (req: Request, res: Response) => {
-  const t = await sequelize.transaction(); 
+  const t = await sequelize.transaction();
 
   try {
     const amount = req.body.amount;
-    const dataObj: DepositTableAttributes = {
+    const dataObj: WithdrawalTableAttributes = {
       id: req.body.id,
       userId: req.body.userdata.userId,
       amount: amount,
@@ -106,13 +123,11 @@ export const createWithdrawal = async (req: Request, res: Response) => {
     console.log("::::::::::::::::::::", userid, " :::::::::::::::::::::::::");
 
     if (!userId) {
-      t.rollback()
-      return res
-        .status(400)
-        .json({
-          code: responceCode.ERROR,
-          message: massage.ERROR_MASSAGE,
-        });
+      t.rollback();
+      return res.status(400).json({
+        code: responceCode.ERROR,
+        message: massage.ERROR_MASSAGE,
+      });
     }
 
     console.log(
@@ -132,16 +147,182 @@ export const createWithdrawal = async (req: Request, res: Response) => {
 
       amount: amount,
       transactionType: "Withdrawal",
-    }); 
-    t.commit()
+    });
+    t.commit();
     return res.status(200).json({ code: 200, userData: createuser });
   } catch (error: any) {
     console.error("Error creating withdrawal:", error);
-    return res
-      .status(500)
-      .json({
-        code: responceCode.SERVER_ERROR,
-        error: withdrawalMassage.SERVER_ERROR_MASSAGE,
-      });
+    return res.status(500).json({
+      code: responceCode.SERVER_ERROR,
+      error: withdrawalMassage.SERVER_ERROR_MASSAGE,
+    });
   }
 };
+
+// product controller
+
+export const addProduct = async (req: Request, res: Response) => {
+  try {
+    const dataObj: ProductTableAttributes = {
+      userId: req.body.userdata.userId,
+      productName: req.body.productName,
+      description: req.body.description,
+      price: req.body.price,
+      image: req.body.image,
+      category: req.body.category,
+    };
+    console.log(dataObj);
+    const createuser: any = await productHelper.createProduct(dataObj);
+    return res.status(200).json({ code: 200, userData: dataObj });
+  } catch (error) {
+    console.log("Error add  Product data", error);
+    return false;
+  }
+};
+
+export const updateProductbyId = async (req: any, res: Response) => {
+  const userId = req.body.userdata.userId;
+  const productId = req.query.id;
+  const productData = req.body;
+  try {
+    const isProductIdOrUserIdExisting =
+      await productHelper.checkproductIdIsExisting(productId, userId);
+    if (!isProductIdOrUserIdExisting) {
+      console.log(" and userId do not match");
+      return res
+        .status(400)
+        .json({ code: 400, message: "productId and userId do not match" });
+    }
+    const updateProduct = await productHelper.updateProductbyId(
+      productId,
+      productData
+    );
+    console.log("::::::::::::::::::::::::", updateProduct);
+    if (!productId) {
+      return res
+        .status(400)
+        .json({ code: 400, message: "product ID is required" });
+    }
+    if (updateProduct) {
+      return res.status(200).json({
+        code: 200,
+        massage: "product data update succesfuly",
+        data: updateProduct,
+      });
+    } else {
+      return res
+        .status(404)
+        .json({ code: 404, message: " product data is not found  !!!!!" });
+    }
+  } catch (error: any) {
+    console.error("Error  update product  by id:", error);
+    return res
+      .status(500)
+      .json({ code: 500, message: "Internal server error !" });
+  }
+};
+
+export const deleteProductById = async (req: any, res: Response) => {
+  const productId: any = req.query.id;
+  const userId = req.body.userdata.userId;
+  console.log(":::::::::::userid:::::::", userId);
+  try {
+    const isProductIdOrUserIdExisting =
+      await productHelper.checkproductIdIsExisting(userId, productId);
+    if (!isProductIdOrUserIdExisting) {
+      console.log("ProductId and userId do not match");
+      return res
+        .status(400)
+        .json({ code: 400, message: "ProductId and userId do not match" });
+    }
+    const deleteById = await productHelper.deleteProduct(productId);
+    console.log("Delete response:", deleteById);
+    if (deleteById) {
+      return res.status(200).json({
+        code: 200,
+        message: "product  deleted successfully",
+        data: deleteById,
+      });
+    } else {
+      return res.status(404).json({ code: 404, message: "product  not found" });
+    }
+  } catch (error: any) {
+    return res
+      .status(500)
+      .json({ code: 500, message: "Internal server error: ", error });
+  }
+};
+
+export const getproductByIdOruserId = async (req: any, res: Response) => {
+  try {
+    const productid: any = req.query.id;
+    const userId = req.body.userdata.userId;
+
+    const product = await productHelper.getProductByIdOruserId(
+      productid,
+      userId
+    );
+
+    if (!product) {
+      return res.status(404).json({ error: "Product  not found" });
+    }
+
+    return res.status(200).json({ code: 200, data: product });
+  } catch (error) {
+    console.error("Error:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+// add to card controller
+export const addToCart = async (req: Request, res: Response) => {
+  try {
+    const dataObj: AddTocardTableAttributes = {
+      userId: req.body.userdata.userId,
+      productId: req.body.productId,
+      quantity: req.body.quantity,
+      status: req.body.status || "checkIn",
+    };
+
+    console.log("Data object to add to cart:", dataObj);
+
+    const { userId, productId, quantity } = dataObj;
+
+    const existingCartEntry = await AddTocartHelper.isProductIdOrUserIdExisting(
+      userId,
+      productId
+    );
+    if (existingCartEntry) {
+      const updatedQuantity = existingCartEntry.quantity + quantity;
+      const updateResponse = await AddTocartHelper.updateQuantity(
+        userId,
+        productId,
+        updatedQuantity
+      );
+      if (updateResponse) {
+        console.log("Updated existing cart entry quantity:", updatedQuantity);
+        const updatedEntry = await AddTocartHelper.isProductIdOrUserIdExisting(
+          userId,
+          productId
+        );
+        return res.status(200).json({ code: 200, userData: updatedEntry });
+      }
+      console.log("Updated existing cart entry:", existingCartEntry);
+      return res.status(200).json({ code: 200, userData: existingCartEntry });
+    } else {
+      const addtoCart = await AddTocartHelper.createAddTocart(dataObj);
+      console.log("Added to cart:", addtoCart);
+
+      return res.status(200).json({ code: 200, userData: addtoCart });
+    }
+  } catch (error) {
+    console.error("Error adding to cart:", error);
+    return res
+      .status(500)
+      .json({ code: 500, message: "Error adding to cart", error });
+  }
+};
+
+
+
+// get  

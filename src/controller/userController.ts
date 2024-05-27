@@ -91,7 +91,7 @@ const createUser = async (req: Request, res: Response) => {
     const createuserAccount = await AccountHelper.createAccountDetail(
       objCreateAccount
     );
- 
+    
     console.log(
       "::::::::::::::",
       createuserAccount,
@@ -455,7 +455,7 @@ const getCardByIdOruserId = async (req: any, res: Response) => {
       return res.status(404).json({ error: "Card not found" });
     }
 
-    return res.status(200).json({ card });
+    return res.status(200).json({code :200, data:card });
   } catch (error) {
     console.error("Error:", error);
     return res.status(500).json({ error: "Internal Server Error" });
@@ -470,7 +470,7 @@ const getCardByIdOruserId = async (req: any, res: Response) => {
 
 const getAllProfile= async (req: any, res: Response) => {
 
-
+ 
   
   const userId= req.body.userdata.userId
   console.log("userId::::::::::",userId);

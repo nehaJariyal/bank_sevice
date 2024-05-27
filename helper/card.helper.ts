@@ -10,7 +10,7 @@ export const createAtmCard = async (data: any) => {
       cardType: data.cardType,
       balance: data.balance,
     });
-    return true;
+    return user;
   } catch (error: any) {
     console.error("Error creating user:", error);
     return false;

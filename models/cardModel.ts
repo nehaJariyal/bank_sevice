@@ -47,6 +47,9 @@ class CardTable extends Model {
           defaultValue:0
         },
         createdAt: {
+
+
+          
           type: DataTypes.DATE,
           allowNull: true,
           defaultValue: DataTypes.NOW,
@@ -65,9 +68,7 @@ class CardTable extends Model {
     );
   }
 }
-const Card = sequelize.define('Card', {
-  // card attributes
-});
+ 
 
 
 export default CardTable;

@@ -1,8 +1,9 @@
 import { Sequelize, Model, DataTypes } from "sequelize";
 import { TABLES } from "../constant/common";
+import ProductModel from "./productModel";
 
-class ProductModel extends Model {
- 
+class AddCartModel extends Model {
+  quantity: any;
   public static initialize(sequelize: Sequelize) {
     this.init(
       {
@@ -15,31 +16,22 @@ class ProductModel extends Model {
         userId: {
           type: DataTypes.BIGINT,
           allowNull: false,
-          unique: true,
         },
-        
-        productName: {
-            type: DataTypes.STRING,
-            allowNull: false,
+       
 
-          },
-          description: {
-            type: DataTypes.TEXT,
+        productId: {
+          type: DataTypes.BIGINT,
+          allowNull: false,
+        },
+        quantity:{
+            type: DataTypes.NUMBER,
+            allowNull: false,  
+        },
+        status:{
+            type: DataTypes.ENUM("checkOut", "checkIn"),
             allowNull: false,
-          },
-          price: {
-            type: DataTypes.FLOAT,
-            allowNull: false,
-          },
-          image:{
-            type:DataTypes.STRING,
-            allowNull: false,
-          },
-          category:{
-            type:DataTypes.STRING,
-            allowNull: false,
-          },
-
+            defaultValue: "checkIn"
+        },
 
         createdAt: {
           type: DataTypes.DATE,
@@ -54,7 +46,7 @@ class ProductModel extends Model {
       },
       {
         sequelize,
-        modelName: TABLES.PRODUCT,
+        modelName: TABLES.ADDCART,
         timestamps: false,
       }
     );
@@ -63,4 +55,4 @@ class ProductModel extends Model {
 
  
 
-export default ProductModel;
+export default AddCartModel;

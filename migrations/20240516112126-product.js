@@ -12,7 +12,7 @@
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      name: {
+      productName: {
         type: Sequelize.STRING
       },
       description: {

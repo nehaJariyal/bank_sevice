@@ -1,25 +1,8 @@
+import { Op } from "sequelize";
 import database from "../models/index";
-import { TABLES } from "../constant/common";
-import { Op, where } from "sequelize";
 
 
-export const checkUserexistByUserNameOREmail = async (emailOrUname: string) => {
-  try {
-    const result = await database.userModel.findOne({
-      where: {
-        [Op.or]: [{ email: emailOrUname }, { userName: emailOrUname }],
-        status: { [Op.in]: ["1", "2"] },
-      },
-    });
-    return result;
-  } catch (err: any) {
-    console.log(
-      "%%%%%%%%%%%%%%%%%%%%%%%%%%%%checkUserexistByUserNameOREmail%%%%%%%%%%%%%%%%%%%%%",
-      err
-    );
-    return [];
-  }
-};
+
 
 export const createUser = async (data: any) => {
   try {
@@ -41,6 +24,30 @@ export const createUser = async (data: any) => {
     return false;
   }
 };
+
+
+
+
+
+export const checkUserexistByUserNameOREmail = async (emailOrUname: string) => {
+  try {
+    const result = await database.userModel.findOne({
+      where: {
+        [Op.or]: [{ email: emailOrUname }, { userName: emailOrUname }],
+        status: { [Op.in]: ["1", "2"] },
+      },
+    });
+    return result;
+  } catch (err: any) {
+    console.log(
+      "%%%%%%%%%%%%%%%%%%%%%%%%%%%%checkUserexistByUserNameOREmail%%%%%%%%%%%%%%%%%%%%%",
+      err
+    );
+    return [];
+  }
+};
+
+
 export const checkUserExistByEmail = async (email: string) => {
   try {
     const userEmail = await database.userModel.findOne({
@@ -71,16 +78,16 @@ export const getUserInfoByMail = async (email: string) => {
   try {
     const userEmail = await database.userModel.findOne({
       where: { email },
-      attributes: [
-        "userName",
-        "email",
-        "fullName",
-        "gender",
-        "DOB",
-        "address",
-        "phoneNo",
-        "status",
-      ],
+        attributes: [
+          "userName",
+          "email",
+          "fullName",
+          "gender",
+          "DOB",
+          "address",
+          "phoneNo",
+          "status",
+        ],
     });
     return userEmail;
   } catch (error) {
@@ -144,16 +151,7 @@ export const getProfile=async (userId:any)=>{
 try {
   const user = await database.userModel.findAll({
     where: { id: userId }, 
-    attributes: [
-      "userName",
-      "email",
-      "fullName",
-      "gender",
-      "DOB",
-      "address",
-      "phoneNo",
-      "status",
-    ], 
+   
     
     include: [
        
@@ -180,9 +178,21 @@ try {
         model: database.TransactionModel, 
         as: 'transaction', 
         required: true
+       },
+       {
+        model:database.ProductModel,
+        as:'product',
+        required: true
+
+       },
+       {
+        model:database.AddCartModel,
+        as:'addToCard',
+        required: true
+
        }
        
-       
+
     ]
   
   })

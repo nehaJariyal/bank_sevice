@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('accountTables', {
+    await queryInterface.createTable('addToCartTables', {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -11,36 +11,35 @@ module.exports = {
       userId: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        unique: true
+          
       },
-       
-      balance: {
+      productId: {
         type: Sequelize.BIGINT,
         allowNull: false,
       },
-      accountType: {
-        type: Sequelize.ENUM('SAVINGS', 'CURRENT'),
+      quantity: {
+        type: Sequelize.INTEGER,
         allowNull: false,
-        defaultValue: 'SAVINGS'
       },
-      
+      status: {
+        type: Sequelize.ENUM('checkOut', 'checkIn'),
+        allowNull: false,
+        defaultValue: 'checkIn'
+      },
       createdAt: {
         type: Sequelize.DATE,
         allowNull: true,
         defaultValue: Sequelize.NOW
-
       },
       updatedAt: {
         type: Sequelize.DATE,
         allowNull: true,
         defaultValue: Sequelize.NOW
-
       }
     });
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('accountTables');
+    await queryInterface.dropTable('addToCartTables');
   }
 };
-
