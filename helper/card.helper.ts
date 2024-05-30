@@ -57,7 +57,7 @@ export const checkCardTypeIsExisting = async (
     throw new Error("Database error");
   }
 };
-export const checkCardIdIsExisting = async (cardId: string, userId: any) => {
+export const checkCardIdIsExisting = async (cardId: number, userId: any) => {
   try {
     const checkCardIdOrUserID = await database.CardModel.findOne({
       where: { id: cardId, userId: userId },

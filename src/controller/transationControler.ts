@@ -9,6 +9,7 @@ import { massage } from "../../constant/common";
 import * as productHelper from "../../helper/product.helper";
 import * as AddTocartHelper from "../../helper/addCart.helper";
 import sequelize from "../../db/sequelize";
+import * as ratingHelper from "../../helper/rating.helper";
 
 interface DepositTableAttributes {
   id: number;
@@ -52,6 +53,14 @@ interface AddTocardTableAttributes {
   status: string;
 }
 
+interface RatingTableAttributes {
+  userId: number;
+  productId: number;
+  rating: number;
+  review: string;
+}
+
+// transation
 export const createDeposit = async (req: Request, res: Response) => {
   const t = await sequelize.transaction();
 
@@ -274,7 +283,7 @@ export const getproductByIdOruserId = async (req: any, res: Response) => {
   }
 };
 
-// add to card controller
+// add cart controller
 export const addToCart = async (req: Request, res: Response) => {
   try {
     const dataObj: AddTocardTableAttributes = {
@@ -323,6 +332,107 @@ export const addToCart = async (req: Request, res: Response) => {
   }
 };
 
+export const getAllProduct = async (req: Request, res: Response) => {
+  const productId = req.query.productId;
+  console.log("productId::::::::::", productId);
+
+  try {
+    const product = await AddTocartHelper.getcartProfile(productId);
+    console.log("product:::::::::::::::::::::::::::::::::::::::", product);
+
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+
+    return res.status(200).json(product);
+  } catch (error) {
+    console.error("Error retrieving product:", error);
+    return res.status(500).json({ error: "Failed to retrieve product" });
+  }
+};
+
+export const deleteCartById = async (req: any, res: Response) => {
+  const cartId = req.query.id;
+  const userId = req.body.userdata.userId;
+  console.log(":::::::::::userid:::::::", userId);
+  console.log(":::::::::::cartid:::::::", cartId);
+  try {
+    const isCartIdOrUserIdExisting =
+      await AddTocartHelper.checkCartIdorUserIdIsExisting(cartId, userId);
+
+    if (!isCartIdOrUserIdExisting) {
+      console.log("cartId and userId do not existing");
+      return res
+        .status(400)
+        .json({ code: 400, message: "cartId and userId do not existing" });
+    }
+    const deleteById = await AddTocartHelper.deleteCart(cartId);
+    console.log("Delete response:", deleteById);
+    if (deleteById) {
+      return res.status(200).json({
+        code: 200,
+        message: "cart  deleted successfully",
+        data: deleteById,
+      });
+    } else {
+      return res.status(404).json({ code: 404, message: "cart  not found" });
+    }
+  } catch (error: any) {
+    return res
+      .status(500)
+      .json({ code: 500, message: "Internal server error: ", error });
+  }
+};
+export const createRating = async (req: Request, res: Response) => {
+  try {
+    const dataObj: RatingTableAttributes = {
+      userId: req.body.userdata.userId,
+      productId: req.body.productId,
+      rating: req.body.rating,
+      review: req.body.review,
+    };
+    const { productId, userId, rating } = dataObj;
+    
+    console.log(dataObj);
+
+    const existingRating = await ratingHelper.checkProductIdorUserIdIsExisting(
+      productId,
+      userId
+    );
+    if (rating > 5) {
+      return res.status(400).json({ error: "Rating must be between 1 and 5" });
+    }
+
+    if (existingRating) {
+      return res.status(400).json({
+        code: 400,
+        message: "Rating for this product by this user already exists",
+      });
+    }
+
+    const creatrating: any = await ratingHelper.createProductRating(dataObj);
+    console.log("creatrating", creatrating);
+
+    return res.status(200).json({ code: 200, userData: dataObj });
+  } catch (error) {
+    console.log("Error add  Product Rating ", error);
+    return false;
+  }
+};
+ 
+
+export const getAllRating = async (req: Request, res: Response) => {
 
 
-// get  
+const { productId, } = req.body;
+    try {
+      const ratingsData = await ratingHelper. getallRatings(productId);
+      if (!ratingsData) {
+        return res.status(404).json({ message: 'Ratings not found' });
+      }
+      return res.status(200).json(ratingsData);
+    } catch (error) {
+      console.error("Error in getAllRatings controller:", error);
+      return res.status(500).json({ message: 'Internal server error' });
+    }
+  }

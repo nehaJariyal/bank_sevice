@@ -7,6 +7,7 @@ import WithdrawalModel from "./withdrawalModel";
 import TransactionModel from "./transactionModel";
 import ProductModel from "./productModel";
 import AddCartModel from "./addCartModel";
+import RatingModel from "./ratingModel";
 const models = [
   userModel,
   CardModel,
@@ -16,6 +17,7 @@ const models = [
   TransactionModel,
   ProductModel,
   AddCartModel,
+  RatingModel
 ];
 models.forEach((model) => {
   model.initialize(database);
@@ -53,8 +55,28 @@ userModel.hasMany(AddCartModel, {
 
 
  
+ 
 
 
+ProductModel.hasMany(AddCartModel,
+   { as: 'addToCard', 
+   foreignKey: 'productId' 
+  });
+AddCartModel.belongsTo(ProductModel, 
+  { as: 'product',
+   foreignKey: 'id'
+   });
+
+
+   ProductModel.hasMany(RatingModel, {
+    as: 'rating',
+    foreignKey: 'productId'  
+  });
+  
+  RatingModel.belongsTo(ProductModel, {
+    as: 'product',
+    foreignKey: 'id'  
+  });
 
 
 export = {
@@ -67,4 +89,5 @@ export = {
   TransactionModel,
   ProductModel,
   AddCartModel,
+  RatingModel
 };

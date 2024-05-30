@@ -6,7 +6,8 @@ export const TABLES:any={
     WITHDRAWAL:'withdrawalTables',
     TRANSATION:"transactionTables",
     PRODUCT:"productTables",
-    ADDCART:"addToCartTables"
+    ADDCART:"addToCartTables",
+    RATING:"ratingTables",
 }
 export const userStatus={
     ACTIVE:1,

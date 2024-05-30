@@ -45,7 +45,12 @@ class UserRoutes {
 
 //  add  to card 
       .post('/addCart',jwtMiddeleware,transactionControler.addToCart)
-      // .post('/getAllProduct',jwtMiddeleware,transactionControler.getAllProduct)
+      .post('/getAllProduct',jwtMiddeleware,transactionControler.getAllProduct)
+      .post('/deleteCart',jwtMiddeleware,transactionControler.deleteCartById)
+      
+      // create rating
+      .post('/createRating',jwtMiddeleware,transactionControler.createRating)
+      .post('/getRating',jwtMiddeleware,transactionControler.getAllRating)
 
 
   }

@@ -1,6 +1,5 @@
-import { Sequelize, Model, DataTypes } from "sequelize";
+import { DataTypes, Model, Sequelize } from "sequelize";
 import { TABLES } from "../constant/common";
-import ProductModel from "./productModel";
 
 class AddCartModel extends Model {
   quantity: any;
@@ -8,13 +7,13 @@ class AddCartModel extends Model {
     this.init(
       {
         id: {
-          type: DataTypes.BIGINT,
+          type: DataTypes.INTEGER,
           allowNull: false,
           autoIncrement: true,
           primaryKey: true,
         },
         userId: {
-          type: DataTypes.BIGINT,
+          type: DataTypes.INTEGER,
           allowNull: false,
         },
        

@@ -1,13 +1,10 @@
 import { Op } from "sequelize";
 import database from "../models/index";
 
-
-
-
 export const createUser = async (data: any) => {
   try {
     const user = database.userModel.create({
-      id:data.id,
+      id: data.id,
       userName: data.userName,
       email: data.email,
       fullName: data.fullName,
@@ -24,10 +21,6 @@ export const createUser = async (data: any) => {
     return false;
   }
 };
-
-
-
-
 
 export const checkUserexistByUserNameOREmail = async (emailOrUname: string) => {
   try {
@@ -46,7 +39,6 @@ export const checkUserexistByUserNameOREmail = async (emailOrUname: string) => {
     return [];
   }
 };
-
 
 export const checkUserExistByEmail = async (email: string) => {
   try {
@@ -78,16 +70,16 @@ export const getUserInfoByMail = async (email: string) => {
   try {
     const userEmail = await database.userModel.findOne({
       where: { email },
-        attributes: [
-          "userName",
-          "email",
-          "fullName",
-          "gender",
-          "DOB",
-          "address",
-          "phoneNo",
-          "status",
-        ],
+      attributes: [
+        "userName",
+        "email",
+        "fullName",
+        "gender",
+        "DOB",
+        "address",
+        "phoneNo",
+        "status",
+      ],
     });
     return userEmail;
   } catch (error) {
@@ -97,22 +89,20 @@ export const getUserInfoByMail = async (email: string) => {
 };
 
 export const updateUserById = async (userId: any, userData: object) => {
-  
   try {
     const response = await database.userModel.update(userData, {
-      where: { id:userId },
+      where: { id: userId },
     });
 
     console.log("Updated user with ID:", userId);
     return response;
   } catch (error: any) {
     console.error("Error updating user by ID:", error);
-    return false; 
+    return false;
   }
 };
 
-
-export const updateUserbyStatus = async (userId:any , userData: object) => {
+export const updateUserbyStatus = async (userId: any, userData: object) => {
   try {
     const response = await database.userModel.update(userData, {
       where: { userId },
@@ -125,15 +115,10 @@ export const updateUserbyStatus = async (userId:any , userData: object) => {
   }
 };
 
-
-
-
-
-export const checkUserExistById= async (userId:any) => {
+export const checkUserExistById = async (userId: any) => {
   try {
     const checkUserId = await database.userModel.findOne({
       where: { id: userId },
-    
 
       raw: true,
     });
@@ -143,63 +128,52 @@ export const checkUserExistById= async (userId:any) => {
     throw new Error("Database error");
   }
 };
+export const getProfile = async (userId: any) => {
+  try {
+    const user = await database.userModel.findAll({
+      where: { id: userId },
 
-
-
-
-export const getProfile=async (userId:any)=>{
-try {
-  const user = await database.userModel.findAll({
-    where: { id: userId }, 
-   
-    
-    include: [
-       
-      {
-        model: database.AccountModel, 
-        as: 'account',
-        required: true
-        }
-      ,{
-        model: database.CardModel, 
-        as: 'card', 
-        required: true
-       },{
-        model: database.DepositModel, 
-        as: 'deposit', 
-        required: true
-       },
-       {
-        model: database.WithdrawalModel, 
-        as: 'withdrawal', 
-        required: true
-       },
-       {
-        model: database.TransactionModel, 
-        as: 'transaction', 
-        required: true
-       },
-       {
-        model:database.ProductModel,
-        as:'product',
-        required: true
-
-       },
-       {
-        model:database.AddCartModel,
-        as:'addToCard',
-        required: true
-
-       }
-       
-
-    ]
-  
-  })
-  return user;
-} catch (error) {
-  console.error("Error retrieving user profile:", error);
-  return null;
-}
+      include: [
+        {
+          model: database.AccountModel,
+          as: "account",
+          required: true,
+        },
+        {
+          model: database.CardModel,
+          as: "card",
+          required: true,
+        },
+        {
+          model: database.DepositModel,
+          as: "deposit",
+          required: true,
+        },
+        {
+          model: database.WithdrawalModel,
+          as: "withdrawal",
+          required: true,
+        },
+        {
+          model: database.TransactionModel,
+          as: "transaction",
+          required: true,
+        },
+        {
+          model: database.ProductModel,
+          as: "product",
+          required: true,
+        },
+        {
+          model: database.AddCartModel,
+          as: "addToCard",
+          required: true,
+        },
+      ],
+    });
+    return user;
+  } catch (error) {
+    console.error("Error retrieving user profile:", error);
+    return null;
+  }
 };
- 

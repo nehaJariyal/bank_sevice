@@ -39,10 +39,9 @@ interface CardTableAttributes {
 //   createdAt?: Date;
 //   updatedAt?: Date;
 // }
- 
 
 const createUser = async (req: Request, res: Response) => {
-  const t =  sequelize.transaction(); 
+  const t = sequelize.transaction();
   try {
     const { userName, email } = req.body;
     const dataObj: BankUserAttributes = {
@@ -85,13 +84,10 @@ const createUser = async (req: Request, res: Response) => {
       accountType: req.body.accountType,
     };
 
-
-
-    
     const createuserAccount = await AccountHelper.createAccountDetail(
       objCreateAccount
     );
-    
+
     console.log(
       "::::::::::::::",
       createuserAccount,
@@ -101,10 +97,10 @@ const createUser = async (req: Request, res: Response) => {
 
     console.log("::::::::::::::::::::::::::::dataobj", createuser);
     if (createuser) {
-      (await t).commit()
+      (await t).commit();
       return res.status(200).json({ code: 200, userData: dataObj });
     } else {
-      (await t).rollback()
+      (await t).rollback();
       return res
         .status(400)
         .json({ code: 400, message: "Could not create user" });
@@ -190,12 +186,11 @@ export const getUserByMail = async (req: any, res: Response) => {
 };
 
 const updateUserById = async (req: any, res: Response) => {
-  const t =  sequelize.transaction(); 
+  const t = sequelize.transaction();
 
   try {
-    
     const userId: any = req.body.userdata.userId;
-console.log(":::::::::::::userid::::::::::::::::::::::" ,userId);
+    console.log(":::::::::::::userid::::::::::::::::::::::", userId);
 
     if (!userId) {
       return res
@@ -205,21 +200,19 @@ console.log(":::::::::::::userid::::::::::::::::::::::" ,userId);
 
     const userData: any = req.body;
     console.log("userData", userData);
-    
+
     const updateUser = await UserHelper.updateUserById(userId, userData);
 
     if (updateUser) {
-      (await t).commit
+      (await t).commit;
       return res.status(200).json({
         code: 200,
         message: "User updated successfully",
         data: updateUser,
       });
     } else {
-      (await t).rollback
-      return res
-        .status(404)
-        .json({ code: 404, message: "User not found" });
+      (await t).rollback;
+      return res.status(404).json({ code: 404, message: "User not found" });
     }
   } catch (error) {
     console.error("Error updating user by id:", error);
@@ -230,7 +223,7 @@ console.log(":::::::::::::userid::::::::::::::::::::::" ,userId);
 };
 
 const deleteuserByStatus = async (req: Request, res: Response) => {
-  const t = await sequelize.transaction(); 
+  const t = await sequelize.transaction();
 
   try {
     const userId = req.body.userId;
@@ -251,14 +244,14 @@ const deleteuserByStatus = async (req: Request, res: Response) => {
     });
 
     if (updateUser) {
-      t.commit()
+      t.commit();
       return res.status(200).json({
         code: 200,
         message: "User  Deleted Successfully",
         data: updateUser,
       });
     } else {
-      t.rollback()
+      t.rollback();
       return res
         .status(500)
         .json({ code: 500, message: "Failed to update user" });
@@ -312,7 +305,7 @@ const blockeduserByStatus = async (req: Request, res: Response) => {
 // create  cardController
 
 const createAtmCard = async (req: Request, res: Response) => {
-  const t = await sequelize.transaction(); 
+  const t = await sequelize.transaction();
 
   try {
     const dataObj: CardTableAttributes = {
@@ -342,10 +335,10 @@ const createAtmCard = async (req: Request, res: Response) => {
     }
     const createUserCard = await CardHelper.createAtmCard(dataObj);
     if (createUserCard) {
-      t.commit()
+      t.commit();
       return res.status(201).json({ code: 201, cardData: dataObj });
     } else {
-      t.rollback()
+      t.rollback();
       return res
         .status(400)
         .json({ code: 400, message: "Could not create ATM card service!" });
@@ -360,7 +353,7 @@ const createAtmCard = async (req: Request, res: Response) => {
 };
 
 export const deleteCardById = async (req: any, res: Response) => {
-  const t = await sequelize.transaction(); 
+  const t = await sequelize.transaction();
 
   const cardId: any = req.query.id;
   const userId = req.body.userdata.userId;
@@ -379,14 +372,14 @@ export const deleteCardById = async (req: any, res: Response) => {
     const deleteById = await CardHelper.deleteCard(cardId);
     console.log("Delete response:", deleteById);
     if (deleteById) {
-      t.commit()
+      t.commit();
       return res.status(200).json({
         code: 200,
         message: "card deleted successfully",
         data: deleteById,
       });
     } else {
-      t.rollback()
+      t.rollback();
       return res.status(404).json({ code: 404, message: "card not found" });
     }
   } catch (error) {
@@ -398,7 +391,7 @@ export const deleteCardById = async (req: any, res: Response) => {
 };
 
 const updateCardById = async (req: any, res: Response) => {
-  const t = await sequelize.transaction(); 
+  const t = await sequelize.transaction();
 
   const userId = req.body.userdata.userId;
   const cardId: any = req.query.id;
@@ -424,14 +417,14 @@ const updateCardById = async (req: any, res: Response) => {
         .json({ code: 400, message: "card ID is required" });
     }
     if (updatecard) {
-      t.commit()
+      t.commit();
       return res.status(200).json({
         code: 200,
         massage: "card update successfuly",
         data: updatecard,
       });
     } else {
-      t.rollback()
+      t.rollback();
       return res
         .status(404)
         .json({ code: 404, message: "card not found !!!!!" });
@@ -455,33 +448,24 @@ const getCardByIdOruserId = async (req: any, res: Response) => {
       return res.status(404).json({ error: "Card not found" });
     }
 
-    return res.status(200).json({code :200, data:card });
+    return res.status(200).json({ code: 200, data: card });
   } catch (error) {
     console.error("Error:", error);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
-
-
 // get allusers
 
-
-
-const getAllProfile= async (req: any, res: Response) => {
-
- 
-  
-  const userId= req.body.userdata.userId
-  console.log("userId::::::::::",userId);
-  
+const getAllProfile = async (req: any, res: Response) => {
+  const userId = req.body.userdata.userId;
+  console.log("userId::::::::::", userId);
 
   try {
     const user = await getProfile(userId);
 
-    console.log("user:::::::::::::::::::::::::::::::::::::::" ,user);
+    console.log("user:::::::::::::::::::::::::::::::::::::::", user);
     if (!user) {
-      
       return res.status(404).json({ error: "!!User not found" });
     }
 
@@ -491,9 +475,6 @@ const getAllProfile= async (req: any, res: Response) => {
     return res.status(500).json({ error: "Failed to retrieve user profile" });
   }
 };
-
-
-
 
 export default {
   // createuser
@@ -510,6 +491,6 @@ export default {
   deleteCardById,
   getCardByIdOruserId,
 
-  // 
-getAllProfile,
+  //
+  getAllProfile,
 };
