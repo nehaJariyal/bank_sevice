@@ -2,7 +2,6 @@ import { DataTypes, Model, Sequelize } from "sequelize";
 import { TABLES } from "../constant/common";
 
 class AccountTable extends Model {
-  [x: string]: any;
   public static initialize(sequelize: Sequelize) {
     this.init(
       {

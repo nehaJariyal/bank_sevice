@@ -1,6 +1,5 @@
-import { Sequelize, Model, DataTypes } from "sequelize";
+import { DataTypes, Model, Sequelize } from "sequelize";
 import { TABLES } from "../constant/common";
-import bcrypt from "bcrypt";
 
 class DepositModel extends Model {
   public static initialize(sequelize: Sequelize) {

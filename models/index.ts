@@ -1,13 +1,13 @@
 import database from "../db/sequelize";
-import userModel from "./userModel";
-import CardModel from "./cardModel";
 import AccountModel from "./accountModel";
-import DepositModel from "./depositModel";
-import WithdrawalModel from "./withdrawalModel";
-import TransactionModel from "./transactionModel";
-import ProductModel from "./productModel";
 import AddCartModel from "./addCartModel";
+import CardModel from "./cardModel";
+import DepositModel from "./depositModel";
+import ProductModel from "./productModel";
 import RatingModel from "./ratingModel";
+import TransactionModel from "./transactionModel";
+import userModel from "./userModel";
+import WithdrawalModel from "./withdrawalModel";
 const models = [
   userModel,
   CardModel,

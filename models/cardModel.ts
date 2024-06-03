@@ -1,7 +1,5 @@
-import { Sequelize, Model, DataTypes } from "sequelize";
+import { DataTypes, Model, Sequelize } from "sequelize";
 import { TABLES } from "../constant/common";
-import bcrypt from "bcrypt";
-import sequelize from "../db/sequelize";
 
 class CardTable extends Model {
   public static initialize(sequelize: Sequelize) {
