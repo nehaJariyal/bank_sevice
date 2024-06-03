@@ -2,7 +2,6 @@ import { Sequelize, Model, DataTypes } from "sequelize";
 import { TABLES } from "../constant/common";
 
 class ProductModel extends Model {
- 
   public static initialize(sequelize: Sequelize) {
     this.init(
       {
@@ -17,29 +16,27 @@ class ProductModel extends Model {
           allowNull: false,
           unique: true,
         },
-        
+
         productName: {
-            type: DataTypes.STRING,
-            allowNull: false,
-
-          },
-          description: {
-            type: DataTypes.TEXT,
-            allowNull: false,
-          },
-          price: {
-            type: DataTypes.FLOAT,
-            allowNull: false,
-          },
-          image:{
-            type:DataTypes.STRING,
-            allowNull: false,
-          },
-          category:{
-            type:DataTypes.STRING,
-            allowNull: false,
-          },
-
+          type: DataTypes.STRING,
+          allowNull: false,
+        },
+        description: {
+          type: DataTypes.TEXT,
+          allowNull: false,
+        },
+        price: {
+          type: DataTypes.FLOAT,
+          allowNull: false,
+        },
+        image: {
+          type: DataTypes.STRING,
+          allowNull: false,
+        },
+        category: {
+          type: DataTypes.STRING,
+          allowNull: false,
+        },
 
         createdAt: {
           type: DataTypes.DATE,
@@ -60,7 +57,5 @@ class ProductModel extends Model {
     );
   }
 }
-
- 
 
 export default ProductModel;

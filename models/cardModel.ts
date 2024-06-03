@@ -32,7 +32,13 @@ class CardTable extends Model {
         },
 
         cardType: {
-          type: DataTypes.ENUM("VISA", "Mastercards", "RuPay", "Contactless","credit"),
+          type: DataTypes.ENUM(
+            "VISA",
+            "Mastercards",
+            "RuPay",
+            "Contactless",
+            "credit"
+          ),
           allowNull: true,
           defaultValue: "VISA",
         },
@@ -44,12 +50,9 @@ class CardTable extends Model {
         limit: {
           type: DataTypes.BIGINT,
           allowNull: false,
-          defaultValue:0
+          defaultValue: 0,
         },
         createdAt: {
-
-
-          
           type: DataTypes.DATE,
           allowNull: true,
           defaultValue: DataTypes.NOW,
@@ -68,7 +71,5 @@ class CardTable extends Model {
     );
   }
 }
- 
-
 
 export default CardTable;

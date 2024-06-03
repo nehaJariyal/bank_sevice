@@ -4,11 +4,11 @@ export const createTransaction = async (data: any) => {
   try {
     const user = database.TransactionModel.create({
       userId: data.userId,
-      otherId:data.otherId,
+      otherId: data.otherId,
       amount: data.amount,
-      transactionId:data.transactionId,
+      transactionId: data.transactionId,
       accountType: data.accountType,
-      transactionType:data.transactionType
+      transactionType: data.transactionType,
     });
     return user;
   } catch (error: any) {

@@ -17,7 +17,7 @@ const models = [
   TransactionModel,
   ProductModel,
   AddCartModel,
-  RatingModel
+  RatingModel,
 ];
 models.forEach((model) => {
   model.initialize(database);
@@ -53,31 +53,24 @@ userModel.hasMany(AddCartModel, {
   as: "addToCard",
 });
 
+ProductModel.hasMany(AddCartModel, {
+  as: "addToCard",
+  foreignKey: "productId",
+});
+AddCartModel.belongsTo(ProductModel, {
+  as: "product",
+  foreignKey: "id",
+});
 
- 
- 
+ProductModel.hasMany(RatingModel, {
+  as: "rating",
+  foreignKey: "productId",
+});
 
-
-ProductModel.hasMany(AddCartModel,
-   { as: 'addToCard', 
-   foreignKey: 'productId' 
-  });
-AddCartModel.belongsTo(ProductModel, 
-  { as: 'product',
-   foreignKey: 'id'
-   });
-
-
-   ProductModel.hasMany(RatingModel, {
-    as: 'rating',
-    foreignKey: 'productId'  
-  });
-  
-  RatingModel.belongsTo(ProductModel, {
-    as: 'product',
-    foreignKey: 'id'  
-  });
-
+RatingModel.belongsTo(ProductModel, {
+  as: "product",
+  foreignKey: "id",
+});
 
 export = {
   database,
@@ -89,5 +82,5 @@ export = {
   TransactionModel,
   ProductModel,
   AddCartModel,
-  RatingModel
+  RatingModel,
 };

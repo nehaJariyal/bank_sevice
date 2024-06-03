@@ -1,5 +1,3 @@
-
-
 import database from "../models/index";
 
 const createWithdrawalDetail = async (data: any) => {
@@ -14,10 +12,6 @@ const createWithdrawalDetail = async (data: any) => {
     return false;
   }
 };
-
-
-
- 
 
 export default {
   createWithdrawalDetail,

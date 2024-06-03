@@ -16,7 +16,6 @@ class DepositModel extends Model {
           type: DataTypes.BIGINT,
           allowNull: false,
         },
-       
 
         amount: {
           type: DataTypes.BIGINT,

@@ -1,5 +1,3 @@
-
-
 import database from "../models/index";
 
 const createDepositDetail = async (data: any) => {

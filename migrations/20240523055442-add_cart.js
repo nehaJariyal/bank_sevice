@@ -1,17 +1,16 @@
-'use strict';
+"use strict";
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('addToCartTables', {
+    await queryInterface.createTable("addToCartTables", {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         unique: true,
-        autoIncrement: true
+        autoIncrement: true,
       },
       userId: {
         type: Sequelize.INTEGER,
         allowNull: false,
-          
       },
       productId: {
         type: Sequelize.BIGINT,
@@ -22,24 +21,24 @@ module.exports = {
         allowNull: false,
       },
       status: {
-        type: Sequelize.ENUM('checkOut', 'checkIn'),
+        type: Sequelize.ENUM("checkOut", "checkIn"),
         allowNull: false,
-        defaultValue: 'checkIn'
+        defaultValue: "checkIn",
       },
       createdAt: {
         type: Sequelize.DATE,
         allowNull: true,
-        defaultValue: Sequelize.NOW
+        defaultValue: Sequelize.NOW,
       },
       updatedAt: {
         type: Sequelize.DATE,
         allowNull: true,
-        defaultValue: Sequelize.NOW
-      }
+        defaultValue: Sequelize.NOW,
+      },
     });
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('addToCartTables');
-  }
+    await queryInterface.dropTable("addToCartTables");
+  },
 };

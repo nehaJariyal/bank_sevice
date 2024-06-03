@@ -1,12 +1,12 @@
-'use strict';
+"use strict";
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('cardTables', {
+    await queryInterface.createTable("cardTables", {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         unique: true,
-        autoIncrement: true
+        autoIncrement: true,
       },
       userId: {
         type: Sequelize.INTEGER,
@@ -25,42 +25,40 @@ module.exports = {
         allowNull: false,
       },
       cardType: {
-        type: Sequelize.ENUM('VISA', 'Mastercards','RuPay','Contactless',"credit"),
+        type: Sequelize.ENUM(
+          "VISA",
+          "Mastercards",
+          "RuPay",
+          "Contactless",
+          "credit"
+        ),
         allowNull: false,
-        defaultValue: 'VISA',
-
+        defaultValue: "VISA",
       },
-       balance: {
+      balance: {
         type: Sequelize.BIGINT,
         allowNull: false,
-        default:0
-
+        default: 0,
       },
       limit: {
         type: Sequelize.BIGINT,
-        
+
         allowNull: false,
-        
-
-
       },
       createdAt: {
         type: Sequelize.DATE,
         allowNull: true,
-        defaultValue: Sequelize.NOW
-
+        defaultValue: Sequelize.NOW,
       },
       updatedAt: {
         type: Sequelize.DATE,
         allowNull: true,
-        defaultValue: Sequelize.NOW
-
-      }
+        defaultValue: Sequelize.NOW,
+      },
     });
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('cardTables',);
-  }
+    await queryInterface.dropTable("cardTables");
+  },
 };
-

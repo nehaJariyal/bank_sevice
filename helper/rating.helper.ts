@@ -59,7 +59,7 @@ export const getallRatings = async (productId: any) => {
     const total_person = ratings.length;
     const average_rating = total_rating / total_person;
 
-    console.log("Total:", total_rating);
+    console.log("Total rating :", total_rating);
 
     return {
       productWithRatings,

@@ -16,20 +16,19 @@ class AddCartModel extends Model {
           type: DataTypes.INTEGER,
           allowNull: false,
         },
-       
 
         productId: {
           type: DataTypes.BIGINT,
           allowNull: false,
         },
-        quantity:{
-            type: DataTypes.NUMBER,
-            allowNull: false,  
+        quantity: {
+          type: DataTypes.NUMBER,
+          allowNull: false,
         },
-        status:{
-            type: DataTypes.ENUM("checkOut", "checkIn"),
-            allowNull: false,
-            defaultValue: "checkIn"
+        status: {
+          type: DataTypes.ENUM("checkOut", "checkIn"),
+          allowNull: false,
+          defaultValue: "checkIn",
         },
 
         createdAt: {
@@ -51,7 +50,5 @@ class AddCartModel extends Model {
     );
   }
 }
-
- 
 
 export default AddCartModel;

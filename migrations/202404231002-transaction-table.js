@@ -26,11 +26,11 @@ module.exports = {
         allowNull: false,
       },
       transactionType: {
-        type: Sequelize.ENUM('Deposit', 'Withdrawal','Payment' ),
+        type: Sequelize.ENUM("Deposit", "Withdrawal", "Payment"),
         allowNull: false,
-        defaultValue: 'Payment',
+        defaultValue: "Payment",
       },
-      
+
       createdAt: {
         type: Sequelize.DATE,
         allowNull: true,

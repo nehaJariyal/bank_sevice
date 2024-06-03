@@ -34,12 +34,10 @@ const authenticateToken = async (
           req.body.userdata = { email: userEmailFromToken, userId };
           next();
         } else {
-          return res
-            .status(403)
-            .json({
-              code: 403,
-              message: "Email in token does not match request parameter",
-            });
+          return res.status(403).json({
+            code: 403,
+            message: "Email in token does not match request parameter",
+          });
         }
       });
     }

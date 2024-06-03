@@ -46,5 +46,4 @@ class AccountTable extends Model {
   }
 }
 
-
 export default AccountTable;

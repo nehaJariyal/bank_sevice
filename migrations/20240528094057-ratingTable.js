@@ -19,7 +19,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-     review: {
+      review: {
         type: Sequelize.STRING,
         allowNull: false,
       },

@@ -15,6 +15,7 @@ class BankUser extends Model {
         userName: {
           type: DataTypes.STRING(50),
           allowNull: false,
+          validate: { len: [3, 9] },
           unique: true,
         },
         email: {
@@ -46,7 +47,7 @@ class BankUser extends Model {
           type: DataTypes.STRING(50),
           allowNull: false,
         },
-        
+
         status: {
           type: DataTypes.ENUM("1", "2", "3"),
           allowNull: true,
@@ -88,7 +89,4 @@ class BankUser extends Model {
   }
 }
 
-
-
- 
 export default BankUser;

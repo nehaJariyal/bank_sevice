@@ -392,7 +392,7 @@ export const createRating = async (req: Request, res: Response) => {
       review: req.body.review,
     };
     const { productId, userId, rating } = dataObj;
-    
+
     console.log(dataObj);
 
     const existingRating = await ratingHelper.checkProductIdorUserIdIsExisting(
@@ -419,20 +419,17 @@ export const createRating = async (req: Request, res: Response) => {
     return false;
   }
 };
- 
 
 export const getAllRating = async (req: Request, res: Response) => {
-
-
-const { productId, } = req.body;
-    try {
-      const ratingsData = await ratingHelper. getallRatings(productId);
-      if (!ratingsData) {
-        return res.status(404).json({ message: 'Ratings not found' });
-      }
-      return res.status(200).json(ratingsData);
-    } catch (error) {
-      console.error("Error in getAllRatings controller:", error);
-      return res.status(500).json({ message: 'Internal server error' });
+  const { productId } = req.body;
+  try {
+    const ratingsData = await ratingHelper.getallRatings(productId);
+    if (!ratingsData) {
+      return res.status(404).json({ message: "Ratings not found" });
     }
+    return res.status(200).json(ratingsData);
+  } catch (error) {
+    console.error("Error in getAllRatings controller:", error);
+    return res.status(500).json({ message: "Internal server error" });
   }
+};

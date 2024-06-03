@@ -15,7 +15,6 @@ class WithdrawalModel extends Model {
           type: DataTypes.BIGINT,
           allowNull: false,
         },
-       
 
         amount: {
           type: DataTypes.BIGINT,
@@ -40,6 +39,5 @@ class WithdrawalModel extends Model {
     );
   }
 }
-
 
 export default WithdrawalModel;
